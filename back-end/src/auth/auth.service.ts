@@ -16,8 +16,9 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.userService.getUserByUsername(email);
+  async validateUser(username: string, pass: string): Promise<any> {
+    const user = await this.userService.getUserByUsername(username);
+    console.log(user);
     if (!user) {
       throw new UnauthorizedException({
         message: 'User dose not exist.',
