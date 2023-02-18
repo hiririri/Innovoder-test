@@ -2,6 +2,10 @@
 back-end/dist
 back-end/node_modules
 
+# ESlint files
+back-end/.eslintrc.js
+back-end/.prettierrc
+
 # Logs
 back-end/logs
 back-end/*.log
@@ -15,8 +19,8 @@ back-end/lerna-debug.log*
 back-end/.DS_Store
 
 # Tests
-back-end//coverage
-back-end//.nyc_output
+back-end/coverage
+back-end/.nyc_output
 
 # IDEs and editors
 back-end/.idea
