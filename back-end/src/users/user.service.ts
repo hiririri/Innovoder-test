@@ -40,8 +40,16 @@ export class UserService {
   }
 
   createUser(userDto: UserDto) {
-    userDto.createdAt = new Date();
-    userDto.updatedAt = new Date();
-    return new this.userModel(userDto);
+    const user = {
+      username: userDto.username,
+      password: userDto.password,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    return new this.userModel(user);
+  }
+
+  deleteUser(username: string) {
+    return this.userModel.findOneAndDelete({ username: username }, { new: true });
   }
 }

@@ -18,7 +18,6 @@ export class AuthService {
 
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.userService.getUserByUsername(username);
-    console.log(user);
     if (!user) {
       throw new UnauthorizedException({
         message: 'User dose not exist.',
@@ -38,12 +37,14 @@ export class AuthService {
 
   async register(userDto: UserDto) {
     // validate DTO
-
+    if (!userDto.username) {
+      throw new BadRequestException('Username requiered.');
+    }
     const createdUser = this.userService.createUser(userDto);
     // check if user exists already
     const user = await this.userService.getUserByUsername(createdUser.username);
     if (user) {
-      throw new BadRequestException();
+      throw new BadRequestException('User already exists');
     }
     // Hash Password
     const saltOrRounds = 10;
