@@ -1,13 +1,12 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { INestApplication } from "@nestjs/common";
+import { INestApplication, UnauthorizedException } from "@nestjs/common";
 import * as request from "supertest";
 import { AppModule } from "./../src/app.module";
 import { describe } from "node:test";
 
-let token = "";
-
-describe("AppController (e2e)", () => {
+describe("App (e2e)", () => {
   let app: INestApplication;
+  let token = "";
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -54,7 +53,7 @@ describe("AppController (e2e)", () => {
       });
 
       // Test with the correct user register information
-      it("should registe a new user", async () => {
+      it("should registe a 'ccc@gmail.com' user", async () => {
         return await request(app.getHttpServer())
           .post("/api/v1/auth/register")
           .send({
@@ -97,13 +96,15 @@ describe("AppController (e2e)", () => {
             password: "123",
           })
           .expect(200);
-         token = res.body.access_token;
+        token = res.body.access_token;
+        return token;
       });
     });
   });
 
   describe("User", () => {
     describe("Update user data", () => {
+      // Test the update of the user's password in an unauthorized route
       it("should not update the user's password without athentification", async () => {
         return await request(app.getHttpServer())
           .patch("/api/v1/users")
@@ -114,8 +115,9 @@ describe("AppController (e2e)", () => {
           .expect(401);
       });
 
-      it("should pass auth check update the user's password", async () => {
-        const updateResponse = await request(app.getHttpServer())
+      // Test the update of the user's password in an authorized route
+      it("should pass the authentication check and update the user's password", async () => {
+        return await request(app.getHttpServer())
           .patch("/api/v1/users")
           .set("Authorization", "Bearer " + token)
           .send({
@@ -127,26 +129,53 @@ describe("AppController (e2e)", () => {
     });
   });
 
-  const mockProduct = {
-    code: "123123",
-  };
+  describe("Food product", () => {
+    // Test the research of a food product in an unauthorized route
+    it("should not return a food product without authentication", async () => {
+      return await request(app.getHttpServer())
+        .get("/api/v1/product/1=")
+        .send({
+          code: "123123",
+        })
+        .expect(401);
+    });
 
-  it("should not return a product info", async () => {
-    return await request(app.getHttpServer())
-      .get("/api/v1/product/1=")
-      .send(mockProduct)
-      .expect(401);
+    // Test the research of a food product dosen't exist
+    it("should throw a NotFoundException", async () => {
+      return await request(app.getHttpServer())
+        .get("/api/v1/product/1=")
+        .set("Authorization", "Bearer " + token)
+        .send({
+          code: "0",
+        })
+        .expect(404);
+    });
+
+    // Test the research of a food product by its barcode in an authorized route
+    it("should return a food product with a token authenticated", async () => {
+      const productResponse = await request(app.getHttpServer())
+        .get("/api/v1/product/1=")
+        .set("Authorization", "Bearer " + token)
+        .send({
+          code: "40896243",
+        })
+        .expect(200);
+
+        // Chocolat noir bio 70%
+        expect(productResponse.body).toHaveProperty("product");
+        return productResponse.body.product.product_name_fr;
+    });
   });
 
   // Delete test user
-  // it("delete 'ccc@gmail.com' user", async () => {
-  //   return await request(app.getHttpServer())
-  //     .delete("/api/v1/users")
-  //     .send({
-  //       username: "ccc@gmail.com",
-  //     })
-  //     .expect(200);
-  // });
+  it("delete 'ccc@gmail.com' user", async () => {
+    return await request(app.getHttpServer())
+      .delete("/api/v1/users")
+      .send({
+        username: "ccc@gmail.com",
+      })
+      .expect(200);
+  });
 
   afterAll(async () => {
     await app.close();
