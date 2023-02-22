@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './users/user.module';
@@ -11,6 +11,11 @@ import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
+    CacheModule.register({
+      ttl: 10,
+      max: 10,
+      isGlobal: true,
+    }),
     ConfigModule.forRoot({
       envFilePath: ['.env'],
       isGlobal: true,
