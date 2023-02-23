@@ -1,10 +1,22 @@
+version: '3.8'
 services:
-  nestapp:
-    container_name: nestapp
-    build: 
+  app:
+    build:
       context: .
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
+      target: production
+    image: my-app:latest
+    container_name: my-app
     env_file:
       - .env
+    ports:
+      - '3000:3000'
+  e2e:
+    build:
+      context: .
+      target: development
+    image: my-app-e2e:latest
+    command: npm run test:e2e
+    env_file:
+      - .env
+    depends_on:
+      - app
