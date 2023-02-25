@@ -40,7 +40,9 @@ Base url = 'localhost:3000/api/v1'
 
 To login GET request
 - /login
+
 Request body:
+
 ```json
 {
     "username":"aaa@gmail.com",
@@ -50,7 +52,9 @@ Request body:
 
 To registe POST request
 - /register
+
 Request body:
+
 ```json
 {
     "username":"aaa@gmail.com",
@@ -60,7 +64,9 @@ Request body:
 
 To update PATCH request (with the token given by login session)
 - /users
+
 Request body:
+
 ```json
 {
     "username":"ccc@gmail.com",
@@ -70,7 +76,9 @@ Request body:
 
 To get a food product POST request (with the token given by login session)
 - /product/1=
+
 Request body:
+
 ```json
 {
     "code": "123123"
@@ -79,7 +87,9 @@ Request body:
 
 To delete an user DELETE request (with the token given by login session)
 - /users
+
 Request body:
+
 ```json
 {
     "username":"ccc@gmail.com"
