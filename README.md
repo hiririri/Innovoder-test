@@ -21,6 +21,7 @@ cd Innovorder-api-test/back-end
 ## This command will build the docker image and run the containers: 
 ## e2e test container;
 ## production container.
+## Wait until the build finish.
 docker-compose up --build -d
 ```
 
@@ -28,7 +29,7 @@ docker-compose up --build -d
 
 ```bash
 ## This command will run the e2e test on user's terminal and print all the test result.
-docker-compose run e2e npm run test:e2e
+docker-compose up --no-recreate e2e
 ```
 
 4. Test the following apis using api test tools such as Postman.
