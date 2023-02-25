@@ -37,6 +37,3 @@ back-end/*.sublime-workspace
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
-# Configure File
-back-end/.env

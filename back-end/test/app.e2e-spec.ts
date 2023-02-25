@@ -167,10 +167,21 @@ describe("App (e2e)", () => {
     });
   });
 
-  // Delete test user
-  it("delete 'ccc@gmail.com' user", async () => {
+  // Delete test user without authorization
+  it("delete 'ccc@gmail.com' user unauthorized", async () => {
     return await request(app.getHttpServer())
       .delete("/api/v1/users")
+      .send({
+        username: "ccc@gmail.com",
+      })
+      .expect(401);
+  });
+
+  // Delete test user without authorization
+  it("delete 'ccc@gmail.com' user under authorization", async () => {
+    return await request(app.getHttpServer())
+      .delete("/api/v1/users")
+      .set("Authorization", "Bearer " + token)
       .send({
         username: "ccc@gmail.com",
       })

@@ -2,10 +2,8 @@ import {
   Body,
   CacheInterceptor,
   CacheKey,
-  CACHE_MANAGER,
   Controller,
   Get,
-  Inject,
   UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
@@ -15,8 +13,16 @@ import { ProductService } from "./product.service";
 @UseInterceptors(CacheInterceptor)
 @Controller("/api/v1/product")
 export class ProductController {
+  /**
+   * @ignore
+   */
   constructor(private readonly productService: ProductService) {}
 
+  /**
+   * A methode that fetches a food product from OpenFoodFacts API
+   * @param body barcode of the product wanted
+   * @returns product information
+   */
   @CacheKey("custom_key")
   @UseGuards(AuthGuard("jwt"))
   @Get(":body")

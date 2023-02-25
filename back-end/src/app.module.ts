@@ -1,5 +1,4 @@
 import { CacheModule, Module } from '@nestjs/common';
-import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './users/user.module';
 import { AuthModule } from './auth/auth.module';
@@ -27,7 +26,7 @@ import { HttpModule } from '@nestjs/axios';
     ProductModule,
     HttpModule,
   ],
-  providers: [AppService, ProductService],
+  providers: [ProductService],
   controllers: [ProductController],
 })
 export class AppModule {}
