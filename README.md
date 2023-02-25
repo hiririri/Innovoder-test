@@ -12,7 +12,7 @@ This project is a simple RESTful API built with NestJS, designed to test an user
 
 ```bash
 git clone https://github.com/hiririri/Innovorder-api-test.git
-cd Innovorder-api-test
+cd Innovorder-api-test/back-end
 ```
 
 2. Build and start the docker containers:
