@@ -57,8 +57,8 @@ Request body:
 
 ```json
 {
-    "username":"aaa@gmail.com",
-    "password":"qwe"
+    "username":"ccc@gmail.com",
+    "password":"111"
 }
 ```
 
